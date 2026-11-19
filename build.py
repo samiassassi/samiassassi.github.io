@@ -5,6 +5,7 @@
 English pages at the root, French in fr/, Arabic (RTL) in ar/.
 Text lives in content.py; layout and interface strings live here; styles in assets/style.css.
 """
+import hashlib
 import json
 import re
 import shutil
@@ -269,6 +270,9 @@ def furrows(n=15, w=1400, gap=34):
 
 
 # --------------------------------------------------------------------------- helpers
+# Cache-busting: a short content hash appended to asset URLs, so browsers fetch a fresh copy after every change.
+VERSION = {f: hashlib.sha1((ROOT / "assets" / f).read_bytes()).hexdigest()[:8] for f in ("style.css", "site.js")}
+
 CUR_PAGE = ' aria-current="page"'
 CUR_TRUE = ' aria-current="true"'
 
@@ -415,7 +419,7 @@ def head(pg, title, desc):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400&amp;family=IBM+Plex+Sans+Arabic:wght@300;400;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{pg.asset('style.css')}">
+<link rel="stylesheet" href="{pg.asset('style.css')}?v={VERSION['style.css']}">
 <script>(function(){{try{{var t=localStorage.getItem('sa-theme');if(t)document.documentElement.setAttribute('data-theme',t);}}catch(e){{}}document.documentElement.classList.add('js');}})();</script>
 {ld}
 </head>"""
@@ -481,7 +485,7 @@ def footer(pg):
  </div>
 </footer>
 <div class="toast" role="status" aria-live="polite"></div>
-<script src="{pg.asset('site.js')}" defer></script>
+<script src="{pg.asset('site.js')}?v={VERSION['site.js']}" defer></script>
 </body>
 </html>"""
 
