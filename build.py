@@ -409,7 +409,7 @@ def head(pg, title, desc):
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:image" content="{pg.asset('portrait.jpg')}">
-<meta name="theme-color" content="#0B2545">
+<meta name="theme-color" content="#343A40">
 {alts}
 <link rel="icon" href="{pg.asset('favicon.svg')}" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
